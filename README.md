@@ -1,5 +1,7 @@
 # DRILLING-CALLBACK-TIMER
 
+https://kroszover.github.io/DRILLING-CALLBACK-TIMER/
+
 ## Descripción del proyecto:
 
 El proyecto consiste en crear una aplicación de temporizador de segundos utilizando JavaScript y callbacks. La aplicación permitirá a los usuarios ingresar una cantidad de tiempo en segundos y luego iniciar el temporizador. El temporizador realizará una cuenta regresiva desde el valor ingresado hasta cero, mostrando los números en formato de dos dígitos (agregando un cero inicial si el número es menor a 10). Además, se utilizará el método `setInterval()` para actualizar el temporizador cada segundo.
