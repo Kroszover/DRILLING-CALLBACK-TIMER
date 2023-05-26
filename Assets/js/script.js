@@ -16,6 +16,7 @@
 /* 2.- Implementar la lógica para capturar el valor ingresado por el usuario al hacer clic en el botón "Empezar".*/
 
 //DOM y variables a usar
+// DOM y variables a usar
 const qtySecondsInput = document.getElementById("cantidadSegundos");
 const seconds = document.getElementById("seconds");
 const empezamos = document.getElementById("verde");
@@ -23,34 +24,40 @@ const cancelar = document.getElementById("rojo");
 
 let intervalo;
 
-//Funciones
+// Funciones
 function formateadorDeNumeros(numero) {
   return numero < 10 ? `0${numero}` : numero;
 }
 
+function actualizarTemporizador(cantidadSegundos) {
+  seconds.textContent = formateadorDeNumeros(cantidadSegundos);
+  if (cantidadSegundos === 0) {
+    clearInterval(intervalo);
+    alert("El tiempo ha terminado");
+    reiniciarTemporizador();
+  } else {
+    intervalo = setTimeout(() => {
+      actualizarTemporizador(cantidadSegundos - 1);
+    }, 1000);
+  }
+}
+
 function initTemporizador() {
   const qtySeconds = parseInt(qtySecondsInput.value);
-  let cantidadSegundos = qtySeconds;
-  seconds.textContent = formateadorDeNumeros(cantidadSegundos);
+  seconds.textContent = formateadorDeNumeros(qtySeconds);
 
-  //Dejamos solo la opcion de cancelar disponible
+  // Dejamos solo la opción de cancelar disponible
   qtySecondsInput.disabled = true;
   empezamos.disabled = true;
   cancelar.disabled = false;
 
-  intervalo = setInterval(() => {
-    cantidadSegundos--;
-    seconds.textContent = formateadorDeNumeros(cantidadSegundos);
-    if (cantidadSegundos === 0) {
-      clearInterval(intervalo);
-      alert("El tiempo ha terminado");
-      reiniciarTemporizador();
-    }
-  });
+  intervalo = setTimeout(() => {
+    actualizarTemporizador(qtySeconds - 1);
+  }, 1000);
 }
 
 function reiniciarTemporizador() {
-  clearInterval(intervalo);
+  clearTimeout(intervalo);
   seconds.textContent = "";
   qtySecondsInput.value = "";
   qtySecondsInput.disabled = false;
@@ -58,7 +65,7 @@ function reiniciarTemporizador() {
   cancelar.disabled = true;
 }
 
-//Eventos
+// Eventos
 empezamos.addEventListener("click", initTemporizador);
 cancelar.addEventListener("click", reiniciarTemporizador);
 
