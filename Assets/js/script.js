@@ -12,34 +12,57 @@
 10.- Asegurarse de que la aplicación funcione correctamente y cumpla con todos los requisitos establecidos. */
 
 //Desarrollo
-const segundos = document.getElementById("seconds");
-segundos.innerHTML = "00";
 
 /* 2.- Implementar la lógica para capturar el valor ingresado por el usuario al hacer clic en el botón "Empezar".*/
 
-const empezar = document.getElementById("verde");
+//DOM y variables a usar
+const qtySecondsInput = document.getElementById("cantidadSegundos");
+const seconds = document.getElementById("seconds");
+const empezamos = document.getElementById("verde");
 const cancelar = document.getElementById("rojo");
 
-empezar.addEventListener("click", function (event) {
-  event.preventDefault(); // Evitar el envío del formulario
+let intervalo;
 
-  // Capturar el valor del input
-  let cantidadSegundos = document.getElementById("cantidadSegundos").value;
-  console.log(cantidadSegundos); // Imprimir el valor en la consola
-
-  // Continuar con la lógica del temporizador
-});
-
-/* 3.- Mostrar en la pantalla el valor ingresado como el tiempo inicial del temporizador.*/
-function mostrarTiempoInicial() {
-  const segundos = document.getElementById("seconds");
-  segundos.innerHTML = " ";
-
-  const cantidadSegundos = document.getElementById("cantidadSegundos").value;
-  segundos.innerHTML = cantidadSegundos;
+//Funciones
+function formateadorDeNumeros(numero) {
+  return numero < 10 ? `0${numero}` : numero;
 }
 
-mostrarTiempoInicial();
+function initTemporizador() {
+  const qtySeconds = parseInt(qtySecondsInput.value);
+  let cantidadSegundos = qtySeconds;
+  seconds.textContent = formateadorDeNumeros(cantidadSegundos);
+
+  //Dejamos solo la opcion de cancelar disponible
+  qtySecondsInput.disabled = true;
+  empezamos.disabled = true;
+  cancelar.disabled = false;
+
+  intervalo = setInterval(() => {
+    cantidadSegundos--;
+    seconds.textContent = formateadorDeNumeros(cantidadSegundos);
+    if (cantidadSegundos === 0) {
+      clearInterval(intervalo);
+      alert("El tiempo ha terminado");
+      reiniciarTemporizador();
+    }
+  });
+}
+
+function reiniciarTemporizador() {
+  clearInterval(intervalo);
+  seconds.textContent = "";
+  qtySecondsInput.value = "";
+  qtySecondsInput.disabled = false;
+  empezamos.disabled = false;
+  cancelar.disabled = true;
+}
+
+//Eventos
+empezamos.addEventListener("click", initTemporizador);
+cancelar.addEventListener("click", reiniciarTemporizador);
+
+/* 3.- Mostrar en la pantalla el valor ingresado como el tiempo inicial del temporizador.*/
 
 /* 4.- Utilizar el método setInterval() para realizar la cuenta regresiva y actualizar el temporizador cada segundo.*/
 
